@@ -1,0 +1,14 @@
+Get file count
+	- Navigate to logs
+	- find . -type f | wc -l
+
+Get most recent files
+	- Navigate to logs
+	- find . -type f -exec --stat format '%Y :%y %n' "{}" \; | sort -nr | cut -d: -f2- | head
+
+Get url.txt
+	- Navigate to logs
+	- find . -type f -exec head -1 \{\} \; > url.txt
+
+Get url.txt duplication counts
+	- sort url.txt | uniq --count > url_dup.txt
