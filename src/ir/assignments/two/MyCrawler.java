@@ -24,6 +24,7 @@ public class MyCrawler extends WebCrawler {
     private final static Pattern PROSPECT = Pattern.compile(".*ics\\.uci\\.edu.*prospective.*");
     private final static Pattern PIX = Pattern.compile(".*eppstein/pix.*");
     private final static Pattern REPO = Pattern.compile(".*lucicoderepository.*");
+    private final static Pattern ARCHIVE = Pattern.compile(".*archive.*ml.*");
     
     /**
      * This method receives two parameters. The first parameter is the page
@@ -41,7 +42,8 @@ public class MyCrawler extends WebCrawler {
         return !FILTERS.matcher(href).matches() && !QUERIES.matcher(href).matches()
                 && DOMAINS.matcher(href).matches() && !BAD_DATA.matcher(href).matches() 
                 && !BAD_DOMAINS.matcher(href).matches() && !PROSPECT.matcher(href).matches()
-                && !PIX.matcher(href).matches() && !REPO.matcher(href).matches();
+                && !PIX.matcher(href).matches() && !REPO.matcher(href).matches()
+                && !ARCHIVE.matcher(href).matches();
     }
 
      /**
