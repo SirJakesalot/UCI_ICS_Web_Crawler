@@ -8,6 +8,15 @@ import java.io.File;
 
 public class CrawlStat
 {
+	/**
+	 * Creates and saves the page as a file with its URL and text data.
+	 *
+	 * @param subdomain The subdomain of the URL.
+	 * @param docId The DOC-ID of the page.
+	 * @param url The URL.
+	 * @param text The text data stripped from the HTML.
+	 * @exception IOException An error opening the File/Buffer Writer.
+	 */
 	public static void addPage(String subdomain, String docId, String url, String text)
 	{
 		String domainPath = "data/logs/" + subdomain;
@@ -34,6 +43,9 @@ public class CrawlStat
 		}
 	}
 
+	/**
+	 * Prints the formatted error.
+	 */
 	public static void printError(String message)
     {
         System.out.println("\n\n=============================\n\n");

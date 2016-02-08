@@ -1,5 +1,7 @@
+backup/*
 bin/*
 data/*
 other/*
 .project
 *.swp
+links.txt

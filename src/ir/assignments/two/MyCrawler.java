@@ -11,20 +11,23 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 import org.apache.http.Header;
 
-public class MyCrawler extends WebCrawler {
+public class MyCrawler extends WebCrawler 
+{
 
-    private final static Pattern BAD_DATA = Pattern.compile(".*eppstein/.*/Data.*");
-
-    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg|jpeg|wav|zip|rar|wmv|doc|docx|tar|gz"
-                                                    + "|png|mp3|mp4|zip|gz|bmp|pdf|ppt|pptx|ps|mov|bigwig|bw|txt|xls|xlsx))$");
-    private final static Pattern DOMAINS = Pattern.compile("^http://.*\\.ics\\.uci\\.edu/.*");
-    private final static Pattern BAD_DOMAINS = Pattern.compile("^http://(archive|calendar|duttgroup|drzaius"
-                                                        + "|fano|ftp|kdd|wics)\\.ics\\.uci\\.edu/.*");
-    private final static Pattern QUERIES = Pattern.compile(".*[\\?@=].*");
+    // Only URLs containing "ics.uci.edu" shoud be included
+    private final static Pattern DOMAINS = Pattern.compile(".*\\.ics\\.uci\\.edu/.*");
+    // Inappropriate file extensions that should be skipped.
+    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg|jpeg|wav|zip|rar|wmv|doc|docx|tar|gz|csv"
+                                                    + "|png|mp3|mp4|zip|gz|bmp|pdf|ppt|pptx|ps|mov|bigwig|bw|txt|xls|xlsx"
+                                                    + "|cc|c|h))$");
+    // Bad domains that were found to cause crawler traps.
+    private final static Pattern BAD_DOMAINS = Pattern.compile(".*(calendar|duttgroup|drzaius"
+                                                        + "|ftp|kdd|wics)\\.ics\\.uci\\.edu/.*");
+    // Query pages and mailto protocols should be avoided.
+    private final static Pattern QUERIES = Pattern.compile(".*[\\?=@].*");
+    // Other broken pages with spider traps.
     private final static Pattern PROSPECT = Pattern.compile(".*ics\\.uci\\.edu.*prospective.*");
-    private final static Pattern PIX = Pattern.compile(".*eppstein/pix.*");
     private final static Pattern REPO = Pattern.compile(".*lucicoderepository.*");
-    private final static Pattern ARCHIVE = Pattern.compile(".*archive.*ml.*");
     
     /**
      * This method receives two parameters. The first parameter is the page
@@ -37,13 +40,12 @@ public class MyCrawler extends WebCrawler {
      * referringPage parameter to make the decision.
      */
     @Override
-    public boolean shouldVisit(Page referringPage, WebURL url) {
+    public boolean shouldVisit(Page referringPage, WebURL url) 
+    {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches() && !QUERIES.matcher(href).matches()
-                && DOMAINS.matcher(href).matches() && !BAD_DATA.matcher(href).matches() 
-                && !BAD_DOMAINS.matcher(href).matches() && !PROSPECT.matcher(href).matches()
-                && !PIX.matcher(href).matches() && !REPO.matcher(href).matches()
-                && !ARCHIVE.matcher(href).matches();
+                && DOMAINS.matcher(href).matches() && !BAD_DOMAINS.matcher(href).matches() 
+                && !PROSPECT.matcher(href).matches() && !REPO.matcher(href).matches();
     }
 
      /**
@@ -51,7 +53,8 @@ public class MyCrawler extends WebCrawler {
       * to be processed by your program.
       */
      @Override
-     public void visit(Page page) {
+     public void visit(Page page) 
+     {
         int docid = page.getWebURL().getDocid();
         String url = page.getWebURL().getURL();
         String domain = page.getWebURL().getDomain();
@@ -59,7 +62,7 @@ public class MyCrawler extends WebCrawler {
         String subDomain = page.getWebURL().getSubDomain();
         String parentUrl = page.getWebURL().getParentUrl();
         String anchor = page.getWebURL().getAnchor();
-
+        // Log the current page info to standard out.
         logger.info("Docid: {}", docid);
         logger.info("URL: {}", url);
         logger.info("Domain: '{}'", domain);
@@ -68,11 +71,13 @@ public class MyCrawler extends WebCrawler {
         logger.debug("Parent page: {}", parentUrl);
         logger.debug("Anchor text: {}", anchor);
 
-        if (page.getParseData() instanceof HtmlParseData) {
+        if (page.getParseData() instanceof HtmlParseData) 
+        {
             HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
             String text = htmlParseData.getText();
             String html = htmlParseData.getHtml();
 
+            // Create the page in our logs folder.
             CrawlStat.addPage(subDomain, Integer.toString(docid), url, text);
 
             Set<WebURL> links = htmlParseData.getOutgoingUrls();
@@ -82,11 +87,13 @@ public class MyCrawler extends WebCrawler {
             logger.debug("Number of outgoing links: {}", links.size());
 
             Header[] responseHeaders = page.getFetchResponseHeaders();
-            if (responseHeaders != null) {
-              logger.debug("Response headers:");
-              for (Header header : responseHeaders) {
-                logger.debug("\t{}: {}", header.getName(), header.getValue());
-              }
+            if (responseHeaders != null) 
+            {
+                logger.debug("Response headers:");
+                for (Header header : responseHeaders) 
+                {
+                    logger.debug("\t{}: {}", header.getName(), header.getValue());
+                }
             }
 
             logger.debug("=============");
