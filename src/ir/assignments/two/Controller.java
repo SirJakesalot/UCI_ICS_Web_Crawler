@@ -11,7 +11,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 
 public class Controller 
 {
-    private static final Logger logger = LoggerFactory.getLogger(MyCrawler.class);
+    private static final Logger logger = LoggerFactory.getLogger(Crawler.class);
     private static final String DATA_FOLDER = "data";
     private static final int NUM_CRAWLERS = 7;
     private static final int POLITENESS_DELAY = 1200;
@@ -50,6 +50,6 @@ public class Controller
         /*
          * Start the crawl.
          */
-        controller.start(MyCrawler.class, NUM_CRAWLERS);
+        controller.start(Crawler.class, NUM_CRAWLERS);
     }
 }

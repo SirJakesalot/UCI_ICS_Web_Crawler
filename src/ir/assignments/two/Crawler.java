@@ -11,7 +11,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 import org.apache.http.Header;
 
-public class MyCrawler extends WebCrawler 
+public class Crawler extends WebCrawler 
 {
 
     // Only URLs containing "ics.uci.edu" shoud be included

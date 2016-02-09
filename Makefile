@@ -18,9 +18,11 @@ FREQUENCY_JAR = lib/Frequency.jar
 CLASSPATH = .:$(BIN):$(CRAWLER_JAR):$(LOGGER_JAR):$(FREQUENCY_JAR)
 
 # Source files to compile
-JAVAC_SRC = $(JAVA_SRC_FOLDER)/MyCrawler.java \
+JAVAC_SRC = $(JAVA_SRC_FOLDER)/Crawler.java \
 			$(JAVA_SRC_FOLDER)/Controller.java \
-			$(JAVA_SRC_FOLDER)/CrawlStat.java
+			$(JAVA_SRC_FOLDER)/CrawlStat.java \
+			$(JAVA_SRC_FOLDER)/Statistics.java \
+			$(JAVA_SRC_FOLDER)/DataThread.java
 
 default: compile
 
@@ -31,6 +33,10 @@ compile: clean
 # Running the tests
 run: compile
 	@java -cp $(CLASSPATH) ir.assignments.two.Controller
+
+# Calculates the statistics
+stat: compile
+	@java -cp $(CLASSPATH) ir.assignments.two.Statistics
 
 clean:
 	@rm -rf $(BIN)
