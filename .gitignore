@@ -2,6 +2,7 @@ backup/*
 bin/*
 data/*
 other/*
+*.zip
 .project
 *.swp
 links.txt

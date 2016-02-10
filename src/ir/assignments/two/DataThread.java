@@ -19,6 +19,8 @@ public class DataThread extends Thread
 {
     // The folder of the subdomain
     private File subdomain;
+    // The name of the subdomain
+    private String subdomainUrl;
     // The map of word frequencies
     private HashMap<String,Frequency> frequencies;
     // The URL of the longest page found so far
@@ -31,6 +33,7 @@ public class DataThread extends Thread
     public DataThread(File file)
     {
         subdomain = file;
+        subdomainUrl = file.getName();
         frequencies = new HashMap<String,Frequency>();
         longestPage = new String("");
         maxWords = 0;
@@ -68,6 +71,11 @@ public class DataThread extends Thread
     public int getNumPages()
     {
         return numPages;
+    }
+
+    public String getSubdomain()
+    {
+        return subdomainUrl;
     }
 
     /**

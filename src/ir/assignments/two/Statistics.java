@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.Collections;
+import java.util.Comparator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -41,6 +42,7 @@ public class Statistics
     private HashMap<String,Frequency> frequencies;
     // The set of stop words
     private HashSet<String> stopWords;
+    // The longest page's URL
     private String longestPageUrl;
     // The number of words found in the longest page
     private int maxWords;
@@ -59,6 +61,11 @@ public class Statistics
         getStopWords();
     }
 
+    /**
+     * Loads the stop words into the stopWords set from StopWords.txt.
+     *
+     * @exception IOException Unable to open the file for reading.
+     */
     public void getStopWords()
     {
         String line;
@@ -135,6 +142,11 @@ public class Statistics
         writeAnswers();
     }
 
+    /**
+     * Combines all the data processed by the threads.
+     *
+     * @exception InterruptedException The DataThread was unable to finish.
+     */
     private void combineThreadData()
     {
         for ( DataThread dt : dataThreads )
@@ -153,6 +165,11 @@ public class Statistics
         }
     }
 
+    /**
+     * Add frequencies from the thread to the master hash map.
+     *
+     * @param dt The DataThread object.
+     */
     private void addFrequencies(DataThread dt)
     {
         Map<String,Frequency> map = dt.getFrequencies();
@@ -167,6 +184,11 @@ public class Statistics
         }
     }
 
+    /**
+     * Checks if the DataThread's longest page is the longest page.
+     *
+     * @param dt The DataThread object.
+     */
     private void addLongestPage(DataThread dt)
     {
         if ( dt.getMaxWords() > maxWords )
@@ -176,14 +198,19 @@ public class Statistics
         }
     }
 
+    /**
+     * Write the subdomains with the number of pages to Subdomains.txt.
+     *
+     * @exception IOException Unable to open the file for writing.
+     */
     private void writeSubdomains()
     {
-        Collections.sort(subdomains);
+        Collections.sort(dataThreads, new DataThreadCompare());
         try ( PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(SUBDOMAINS_TXT))) )
         {
-            for ( String domain : subdomains )
+            for ( DataThread dt : dataThreads )
             {
-                pw.println(domain);
+                pw.println(dt.getSubdomain() + ", " + dt.getNumPages());
                 pw.flush();
             }
             pw.close();
@@ -194,6 +221,11 @@ public class Statistics
         }
     }
 
+    /**
+     * Write out the top 500 common words and their frequency to CommonWords.txt.
+     *
+     * @exception IOException Unable to open the file for writing.
+     */
     private void writeCommonWords()
     {
         ArrayList<Frequency> sortedFrequencies = new ArrayList<Frequency>();
@@ -222,6 +254,11 @@ public class Statistics
         }
     }
 
+    /**
+     * Write out the answer to the questions to Answers.txt.
+     *
+     * @exception IOException Unable to open the file for writing.
+     */
     private void writeAnswers()
     {
         try ( PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(ANSWERS_TXT))) )
@@ -239,6 +276,13 @@ public class Statistics
         }
     }
 
+    /**
+     * Checks if the words is valid.
+     * In other words, no numbers or whitespace.
+     *
+     * @param word The word to verify.
+     * @return True if the word is valid.
+     */
     private boolean isValidWord(String word)
     {
         if ( !stopWords.contains(word) )
@@ -255,6 +299,26 @@ public class Statistics
         return false;
     }
 
+    /**
+     * Comparison class to compare two DataThread objects by subdomain name.
+     * Tiebreaker is number of pages.
+     */
+    public static class DataThreadCompare implements Comparator<DataThread>
+    {
+        public int compare(DataThread d1, DataThread d2)
+        {
+            if ( d1.getName().equals(d2.getName()) )
+            {
+                return d2.getNumPages() - d1.getNumPages();
+            }
+            else
+            {
+                return d1.getSubdomain().compareTo(d2.getSubdomain());
+            }
+        }
+    }
+
+    /* Starts processing */
     public static void main(String[] args)
     {
         File[] files = new File[1];

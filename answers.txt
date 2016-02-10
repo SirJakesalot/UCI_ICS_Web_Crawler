@@ -1,4 +1,4 @@
-Time: 
+Time: 40 hours
 Unique pages: 40059
 Longest Page URL: http://mondego.ics.uci.edu/projects/yelp/files/train.arff
 Longest Page Word Count: 5983049
