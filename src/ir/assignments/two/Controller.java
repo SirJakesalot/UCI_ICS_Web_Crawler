@@ -1,3 +1,13 @@
+/*
+ * Assignment 2, CS 121
+ * Written by:  Jacob Armentrout     66598462
+ *              Gillian Bendicio,    56433482
+ *              Jennifer Chew,       53649288
+ *              Vinh Vu              21775557
+ *
+ * Last Modified Date: 02/09/16
+ */
+
 package ir.assignments.two;
 
 import org.slf4j.Logger;
