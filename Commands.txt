@@ -11,4 +11,7 @@ Get url.txt
 	- find . -type f -exec head -1 \{\} \; > url.txt
 
 Get url.txt duplication counts
-	- sort url.txt | uniq --count > url_dup.txtx
+	- sort url.txt | uniq --count > url_dup.txt
+
+
+java -cp .:../lib/* ir/assignments/two/Controller
