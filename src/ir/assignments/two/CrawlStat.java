@@ -29,7 +29,7 @@ public class CrawlStat
 	 */
 	public static void addPage(String subdomain, String docId, String url, String text)
 	{
-		String domainPath = "data/logs/" + subdomain;
+		String domainPath = "../logs/" + subdomain;
 		String filePath = domainPath + "/" + docId + ".txt";
 		File dir = new File(domainPath);
 		try 
