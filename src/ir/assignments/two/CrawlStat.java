@@ -36,7 +36,7 @@ public class CrawlStat
 		{
 			if ( !dir.exists() )
 			{
-				dir.mkdir();
+				dir.mkdirs();
 			}
 			BufferedWriter page = new BufferedWriter(new FileWriter(filePath, false));
 			page.write(url + "\n" + text);
