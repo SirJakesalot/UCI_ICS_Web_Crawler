@@ -5,5 +5,5 @@
 <h2>How to run</h2>
 <code>cd bin; ./run.sh</code>
 
-Logs are output to logs/<SUBDOMAIN>/<DOCID>
+Logs are output to logs/SUBDOMAIN/DOCID
 
